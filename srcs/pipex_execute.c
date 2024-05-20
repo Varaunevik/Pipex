@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_execute.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 11:46:28 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/05/20 12:03:03 by vaunevik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../includes/pipex.h"
 
 void check_path(t_pipex *pipex)
@@ -16,7 +27,7 @@ void check_path(t_pipex *pipex)
             my_free(&pipex->cmd, 2);
             pipex->cmd = path;
             if (access(path, X_OK))
-                exit(my_free(pipex, err_msg(ERR_PERROR, 126, NULL)));
+                exit(free_pip(pipex, err_msg(ERR_PERROR, 126, NULL)));
             return ;
         }
         my_free(&path, 2);
@@ -67,9 +78,9 @@ int fill_args(char *whole, char delimeter, char **full_cmd, int position)
     while (whole[++i] && (whole[i] != delimeter))
         if (whole[i] != '\\')
             count++;
-    arg = (char *)ft_calloc(sizeof(char), count + 1);
+	arg = (char *)malloc(sizeof(char) * count + 1);
     if (!arg)
-        return(0);
+        return (0);
     count = 0;
     i = -1;
     while (whole[++i] && whole[i] != delimeter)

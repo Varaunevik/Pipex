@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/05/20 12:22:59 by vaunevik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../includes/pipex.h"
 
 int pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
@@ -7,14 +18,13 @@ int pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
     pipex->argv = argv;
     pipex->cmd = NULL;
     pipex->full_cmd = NULL;
-    pipex->limiter = ft_strjoin(argv[2], "\n\0");
-    if (!pipex->limiter)
-        return (0);
-    pipex->heredoc = check_heredoc(argc, argc, pipex);
+    pipex->limiter = argv[2];
+    pipex->heredoc = check_heredoc(pipex);
     if (pipex->heredoc)
     {
         pipex->infile = pipex->heredoc;
-        if (dup2(pipex->infile, READ) == -1)
+		pipex->heredoc = 1;
+        if (dup2(pipex->infile, STDIN_FILENO) == -1)
             exit(free_pip(pipex, err_msg(ERR_PERROR, 1, NULL)));
     }
     pipex->outfile = 0;
@@ -55,7 +65,7 @@ void my_free(char **str, int opt)
         }
         free(str);
     }
-    else if (str && *str && str == 2)
+    else if (str && *str && opt == 2)
     {
         free(*str);
         *str = NULL;
@@ -84,8 +94,6 @@ int    err_msg(int error, int exit, char *param)
         ft_putstr_fd("error creating pipe", 2);
     if (error == FORK_ERR)
         ft_putstr_fd("error forking process", 2);
-    if (error == NO_PATH)
-        ft_putstr_fd("PATH is not set", 2);
     if (error == ERR_PERROR)
         perror();
     if (param && (error == NO_CMD ||error == NO_FILE ||error == NO_PERM ||error == CMD_FAIL))

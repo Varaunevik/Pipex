@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_paths.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/05/20 10:50:16 by vaunevik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../includes/pipex.h"
 
+/** If path does not exist need to sub the absolute path??*/
 char	*get_path(char **envp)
 {
 	int		i;

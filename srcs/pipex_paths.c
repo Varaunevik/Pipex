@@ -6,13 +6,37 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 10:50:16 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:21:49 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
+void	get_correct_path(t_pipex *pipex)
+{
+	char	*path;
+	int		i;
+
+	i = -1;
+	while (pipex->paths[++i] && !ft_strchr(pipex->cmd, '/'))
+	{
+		path = ft_strjoin(pipex->paths[i], pipex->cmd);
+		if (!path)
+			exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
+		if (access(path, F_OK) == 0)
+		{
+			my_free(&pipex->cmd, 2);
+			pipex->cmd = path;
+			if (access(path, X_OK))
+				exit(free_pip(pipex, err_msg(ERR_PERROR, 126, NULL)));
+			return ;
+		}
+		my_free(&path, 2);
+	}
+	exit(free_pip(pipex, err_msg(NO_FILE, 127, pipex->full_cmd[0])));
+}
+
 /** If path does not exist need to sub the absolute path??*/
-char	*get_path(char **envp)
+static char	*get_path(char **envp)
 {
 	int		i;
 	char	*path;

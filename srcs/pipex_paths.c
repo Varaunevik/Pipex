@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 14:21:49 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:34:05 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -35,7 +35,6 @@ void	get_correct_path(t_pipex *pipex)
 	exit(free_pip(pipex, err_msg(NO_FILE, 127, pipex->full_cmd[0])));
 }
 
-/** If path does not exist need to sub the absolute path??*/
 static char	*get_path(char **envp)
 {
 	int		i;
@@ -53,6 +52,8 @@ static char	*get_path(char **envp)
 		}
 		i++;
 	}
+	if (!path)
+		path = ft_strdup("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 	return (path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 14:48:31 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:00:54 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -17,7 +17,7 @@ static void    child_process(t_pipex *pipex, char *command, int argc)
         exit(free_pip(pipex, err_msg(NO_CMD, 127, command));
     if (!special_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
-    access_path(pipex);
+    get_correct_path(pipex);
     close(pipex->fd[READ]);
     if (dup2(pipex->fd[WRITE], STDOUT_FILENO) == -1)
         exit(free_pip(pipex, err_msg(DUP_ERR, 1, NULL)));
@@ -62,7 +62,7 @@ static void    parent_process(t_pipex *pipex, char *command)
         exit(free_pip(pipex, err_msg(NO_CMD, 127, command)));
     if (!special_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
-    access_path(pipex);
+    get_correct_path(pipex);
     execve(pipex->cmd, pipex->full_cmd, pipex->envp);
     exit(free_pip(pipex, 1));
 }

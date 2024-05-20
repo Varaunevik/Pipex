@@ -40,5 +40,21 @@ typedef struct s_pipex
     char    **full_cmd;
 }   t_pipex;
 
+/*-----------------pipex_main.c----------------*/
+int open_infile(t_pipex *pipex);
+int main(int argc, char **argv, char **envp);
+
+/*-----------------pipex_paths.c---------------*/
+char	**split_envp(char **envp);
+void	get_correct_path(t_pipex *pipex);
+
+/*-----------------pipex_utilc.c---------------*/
+int    err_msg(int error, int exit, char *arg);
+void my_free(char **str, int opt);
+int free_pip(t_pipex *pipex, int error);
+int pipexify(t_pipex *pipex, int argc, char **argv, char **envp);
+
+/*-----------------special_split.c-------------*/
+int	special_spilt(char *cmd, t_pipex *pipex);
 
 #endif

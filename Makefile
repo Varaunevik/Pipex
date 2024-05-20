@@ -15,6 +15,8 @@ DEPS = $(addprefix objs/, ${SRCS:.c=.d})
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
+RM = rm -rf
+
 #---------------RULES----------------#
 
 

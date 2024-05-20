@@ -6,16 +6,16 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 13:00:00 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:14:49 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
-void    make_children(t_pipex *pipex, char *command, int argc)
+void    child_process(t_pipex *pipex, char *command, int argc)
 {
     if (!command ||!*command)
         exit(free_pip(pipex, err_msg(NO_CMD, 127, command));
-    if (!get_commands(command, pipex))
+    if (!special_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
     access_path(pipex);
     close(pipex->fd[READ]);
@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **envp)
         if (pipex.pid < 0)
             exit(free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
         else if (!pipex.pid)
-            make_children(&pipex, pipex.argv[2 + pipex->heredoc + i], argc);
+            child_process(&pipex, pipex.argv[2 + pipex->heredoc + i], argc);
 		if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
             exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
         close(pipex.fd[READ]);
@@ -83,7 +83,7 @@ void    parent_process(t_pipex *pipex, char *command)
     close(pipex->outfile);
     if (!command ||!*command)
         exit(free_pip(pipex, err_msg(NO_CMD, 127, command)));
-    if (!get_commands(command, pipex))
+    if (!special_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
     access_path(pipex);
     execve(pipex->cmd, pipex->full_cmd, pipex->envp);

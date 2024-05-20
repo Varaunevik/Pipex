@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 12:22:59 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:57:32 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -27,6 +27,7 @@ int pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
         if (dup2(pipex->infile, STDIN_FILENO) == -1)
             exit(free_pip(pipex, err_msg(ERR_PERROR, 1, NULL)));
     }
+	pipex->infile = open_infile(pipex);
     pipex->outfile = 0;
     pipex->paths = split_envp(envp);
     if (!pipex->paths)
@@ -73,7 +74,7 @@ void my_free(char **str, int opt)
     str = NULL;
 }
 
-int    err_msg(int error, int exit, char *param)
+int    err_msg(int error, int exit, char *arg)
 {
     ft_putstr_fd("pipex: ", 2);
     if (error == NO_CMD)
@@ -97,7 +98,7 @@ int    err_msg(int error, int exit, char *param)
     if (error == ERR_PERROR)
         perror();
     if (param && (error == NO_CMD ||error == NO_FILE ||error == NO_PERM ||error == CMD_FAIL))
-        ft_putstr_fd(param, 2);
+        ft_putstr_fd(arg, 2);
     ft_putstr_fd("\n", 2);
     return(exit);
 }

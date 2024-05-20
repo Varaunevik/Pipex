@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/20 13:57:32 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:48:51 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -33,6 +33,29 @@ int pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
     if (!pipex->paths)
         return(free_pip(pipex, 0));
     return (1);
+}
+
+static int	check_heredoc(t_pipex *pipex)
+{
+	int	fd[2];
+	char	*line;
+
+	if (ft_strncmp(pipex->argv[1], "here_doc\0", 9))
+		return (0);
+	if (pipe(fd) == -1)
+		exit(free_pipe(pipex, err_msg(PIPE_ERR, 1, NULL)));
+	ft_putstr_fd("> ", 1);
+	line = get_next_line(STDIN_FILENO);
+	while (line && ft_strncmp(line, pipex->limiter, ft_strlen(line)))
+	{
+		ft_putstr_fd(line, fd[WRITE]);
+		my_free(&line, 2);
+		ft_putstr_fd("> ", 1);
+		line = get_next_line(STDIN_FILENO);
+	}
+	my_free(&line, 2);
+	close(fd[WRITE]);
+	return (fd[READ]);
 }
 
 int free_pip(t_pipex *pipex, int error)
@@ -101,14 +124,4 @@ int    err_msg(int error, int exit, char *arg)
         ft_putstr_fd(arg, 2);
     ft_putstr_fd("\n", 2);
     return(exit);
-}
-
-
-
-
-
-
-
-
-
 }

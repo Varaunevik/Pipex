@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:24:53 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:32:46 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -30,10 +30,10 @@ int	cmd_split(char *cmd, t_pipex *pipex)
 		del = ' ';
 		while (cmd && cmd[i] == del)
 			i++;
-		/*if (cmd[i] && ft_strchr("\"\'\0", cmd[i]))
+		if (cmd[i] && ft_strchr("\"\'\0", cmd[i]))
 			del = cmd[i++];
 		while (cmd && cmd[i] == del)
-			i++;*/
+			i++;
 		if (cmd[i] && !fill_flags(&cmd[i], del, pipex->full_cmd, pos++))
 		{
 			my_free(pipex->full_cmd, 1);
@@ -94,10 +94,10 @@ static int	count_flags(char *command)
 		del = ' ';
 		while (command[i] && command[i] == del)
 			i++;
-		/*if (command[i] && ft_strchr("\"\'\0", command[i]))
+		if (command[i] && ft_strchr("\"\'\0", command[i]))
 			del = command[i++];
 		while (command[i] && command[i + 1] && command[i] == del)
-			i++;*/
+			i++;
 		if (command[i])
 			count++;
 		while (command[i] && command[i] != del)

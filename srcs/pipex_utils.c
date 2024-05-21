@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:24:55 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:25:59 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -137,8 +137,8 @@ int    err_msg(int error, int exit, char *arg)
         ft_putstr_fd("error creating pipe", 2);
 	if (error == FORK_ERR)
         ft_putstr_fd("error forking process", 2);
-	/*if (error == ERR_PERROR)
-        perror(arg);*/
+	if (error == ERR_PERROR)
+        perror(arg);
     if (arg && (error == NO_CMD ||error == NO_FILE ||error == NO_PERM ||error == CMD_FAIL))
         ft_putstr_fd(arg, 2);
     ft_putstr_fd("\n", 2);

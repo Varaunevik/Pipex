@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:28:30 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:48:55 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -16,7 +16,7 @@ static void  open_outfile(t_pipex *pipex);
 void    child_process(t_pipex *pipex, char *command)
 {
     if (!command ||!*command)
-        exit(free_pip(pipex, err_msg(NO_CMD, 127, command)));
+        exit(free_pip(pipex, err_msg(NO_PERM, 0, command)));
     if (!cmd_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
     get_correct_path(pipex);
@@ -62,12 +62,12 @@ void    parent_process(t_pipex *pipex, char *command)
     open_outfile(pipex);
     close(pipex->outfile);
     if (!command ||!*command)
-        exit(free_pip(pipex, err_msg(NO_CMD, 127, command)));
+        exit(free_pip(pipex, err_msg(NO_PERM, 126, command)));
     if (!cmd_split(command, pipex))
         exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
     get_correct_path(pipex);
     execve(pipex->cmd, pipex->full_cmd, pipex->envp);
-    exit(free_pip(pipex, 1));
+exit(free_pip(pipex, 1));
 }
 
 static void	open_outfile(t_pipex *pipex)

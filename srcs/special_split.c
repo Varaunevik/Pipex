@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:32:46 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:48:18 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -22,6 +22,8 @@ int	cmd_split(char *cmd, t_pipex *pipex)
 
 	i = 0;
 	pos = 0;
+	if (!cmd || !*cmd)
+		return(err_msg(NO_PERM, 0, NULL));
 	pipex->full_cmd = (char **)malloc(sizeof(char *) * (count_flags(cmd) + 1));
 	if (!pipex->full_cmd)
 		return (0);

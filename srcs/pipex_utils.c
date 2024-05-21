@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:19:38 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:24:55 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -120,7 +120,7 @@ int    err_msg(int error, int exit, char *arg)
 {
     ft_putstr_fd("pipex: ", 2);
     if (error == NO_CMD)
-        ft_putstr_fd("command not found:", 2);
+        ft_putstr_fd("command not found: ", 2);
 	if (error == NO_FILE)
         ft_putstr_fd("no such file or directory: ", 2);
 	if (error == NO_PERM)

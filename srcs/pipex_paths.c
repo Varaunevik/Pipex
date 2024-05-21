@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:19:41 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:24:58 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -32,7 +32,7 @@ void	get_correct_path(t_pipex *pipex)
 		}
 		my_free(&path, 2);
 	}
-	exit(free_pip(pipex, err_msg(NO_CMD, 127, "check")));
+	exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
 }
 
 static char	*get_path(char **envp)

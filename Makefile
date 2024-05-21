@@ -1,27 +1,81 @@
-NAME = pipex
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/05/21 10:59:17 by vaunevik          #+#    #+#              #
+#    Updated: 2024/05/21 13:18:33 by vaunevik         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+NAME		= pipex
+INC			= ./includes/
+INC_HEADERS	= $(INC)pipex.h
 
-#-------------DIRECTORIES------------#
-INC_DIR = ./includes
-LIB_DIR = ./libft
-SRCS_DIR = ./srcs
+LIB_INC		= $(LIBFT)/libft.h
 
-#---------------FILES----------------#
-SRCS = pipex_main.c pipex_bonus.c pipex_paths.c special_split.c
+LIBFT			= ./libft/
+FT_LNK		= -L$(LIBFT) -lft
+FT_LIB		= $(LIBFT)libft.a
 
-OBJS = $(addprefix objs/, ${SRCS:.c=.o})
-DEPS = $(addprefix objs/, ${SRCS:.c=.d})
+SRC_DIR		= srcs/
+OBJ_DIR		= obj/
+CFLAGS		= -I $(INC) -Wall -Werror -Wextra #-fsanitize=address
+RM			= rm -f
 
-#-------------COMPILATION------------#
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+###############COLORS###############
 
-RM = rm -rf
+RED =			\033[0;91m
+GREEN =			\033[0;92m
+YELLOW =		\033[0;93m
+BLUE = \033[0;34m
+MAGENTA = \033[0;95m
+CYAN = \033[0;96m
+DEF_COLOR = \033[0m
 
-#---------------RULES----------------#
+
+###############FILES################
+SRC_FILES	=	pipex_main.c \
+				pipex_paths.c \
+				special_split.c \
+				pipex_utils.c
+
+SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJ 		=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+DEP			= 	$(addsuffix .d, $(basename $(OBJ)))
+B_OBJ		=	$(OBJ)
+
+##############RULES################
+all:
+		@$(MAKE) -C $(LIBFT)
+		@$(MAKE) $(NAME)
+
+$(OBJ_DIR)%.o: %.c Makefile
+			@mkdir -p $(dir $@)
+			@echo "$(YELLOW)Compiling $(CYAN)$< $(DEF_COLOR)"
+			@$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME):	$(OBJ)
+			@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) -o $(NAME)
+			@echo "$(GREEN)\nCreated ${NAME} $(DEF_COLOR)\n"
+
+-include $(DEP)
+
+bonus: $(NAME)
+
+clean:
+			@$(RM) -rf $(OBJ_DIR)
+			@make clean -C $(LIBFT)
+			@echo "\n $(RED)Objects cleaned successfully $(DEF_COLOR)\n"
+
+fclean:		clean
+			@$(RM) -f $(NAME)
+			@make fclean -C $(LIBFT)
+			@echo "\n $(RED)Objects and executable cleaned successfully $(DEF_COLOR)\n"
+
+re:			fclean all
+			@echo "$(GREEN)Cleaned and rebuilt everything!$(DEF_COLOR)"
 
 
-fclean: clean
-
-re: fclean all
-
-.PHONY: all clean fclean re bonus
+.PHONY:		all clean fclean re

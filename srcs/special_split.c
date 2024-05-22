@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/21 16:48:18 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:07:33 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -71,6 +71,7 @@ static int	fill_flags(char *cmd, char del, char **full_cmd, int pos)
 	flag = (char *)malloc(sizeof(char) * (count + 1));
 	if (!flag)
 		return (0);
+	flag[count] = '\0';
 	count = 0;
 	i = 0;
 	while (cmd[i] && (cmd[i] != del))
@@ -89,16 +90,16 @@ static int	count_flags(char *command)
 	int	i;
 	char del;
 
-	i = -1;
+	i = 0;
 	count = 0;
-	while (command[++i])
+	while (command[i])
 	{
 		del = ' ';
 		while (command[i] && command[i] == del)
 			i++;
 		if (command[i] && ft_strchr("\"\'\0", command[i]))
 			del = command[i++];
-		while (command[i] && command[i + 1] && command[i] == del)
+		while (command[i] && command[i] == del)
 			i++;
 		if (command[i])
 			count++;

@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 15:11:26 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:23:34 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -67,7 +67,6 @@ void	parent_process(t_pipex *pipex, char *command)
 	if (!cmd_split(command, pipex))
 		exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
 	get_correct_path(pipex);
-	my_free(pipex->paths, 1);
 	execve(pipex->cmd, pipex->full_cmd, pipex->envp);
 	exit(free_pip(pipex, 1));
 }

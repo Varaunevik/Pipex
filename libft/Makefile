@@ -8,6 +8,8 @@ SRCS = ft_strlen.c \
 		ft_substr.c \
 		ft_strdup.c \
 		ft_strlcpy.c \
+		ft_strchr.c \
+		ft_putstr_fd.c \
 		get_next_line.c \
 		get_next_line_utils.c 
 

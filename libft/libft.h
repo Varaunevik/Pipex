@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 12:40:34 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/15 12:40:52 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/22 10:43:11 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -24,5 +24,7 @@ int		ft_strlen(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *s1);
 int		ft_strlcpy(char *dst, char *src, int dstsize);
+char	*ft_strchr(const char *s, int c);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif

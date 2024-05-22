@@ -6,12 +6,12 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 14:13:05 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:11:26 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
-static void  open_outfile(t_pipex *pipex);
+static void	open_outfile(t_pipex *pipex);
 
 void	child_process(t_pipex *pipex, char *command)
 {
@@ -32,7 +32,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 	int		i;
-	int		status;
 
 	i = 0;
 	if (argc < 5 || (!ft_strncmp(argv[1], "here_doc\0", 9) && argc < 6))
@@ -54,8 +53,8 @@ int	main(int argc, char **argv, char **envp)
 		close(pipex.fd[WRITE]);
 		i++;
 	}
-	while (wait(&status) > 0)
-		parent_process(&pipex, pipex.argv[2 + pipex.heredoc + i]);
+	parent_process(&pipex, pipex.argv[2 + pipex.heredoc + i]);
+	free_pip(&pipex, 0);
 	return (0);
 }
 
@@ -68,6 +67,7 @@ void	parent_process(t_pipex *pipex, char *command)
 	if (!cmd_split(command, pipex))
 		exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
 	get_correct_path(pipex);
+	my_free(pipex->paths, 1);
 	execve(pipex->cmd, pipex->full_cmd, pipex->envp);
 	exit(free_pip(pipex, 1));
 }

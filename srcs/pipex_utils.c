@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 14:14:10 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:09:37 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -79,14 +79,10 @@ static int	check_heredoc(t_pipex *pipex)
 
 int	free_pip(t_pipex *pipex, int error)
 {
-	if (pipex->paths)
-		my_free(pipex->paths, 1);
-	if (pipex->full_cmd)
-		my_free(pipex->full_cmd, 1);
-	if (pipex->cmd)
-		my_free(&pipex->cmd, 2);
-	if (pipex->limiter)
-		my_free(&pipex->limiter, 2);
+	my_free(pipex->paths, 1);
+	my_free(pipex->full_cmd, 1);
+	my_free(&pipex->cmd, 2);
+	my_free(&pipex->limiter, 2);
 	if (pipex->fd[READ])
 		close(pipex->fd[READ]);
 	if (pipex->fd[WRITE])
@@ -102,13 +98,13 @@ void	my_free(char **str, int opt)
 {
 	int	i;
 
+	i = 0;
 	if (str && opt == 1)
 	{
-		i = 0;
-		while (str[i++])
+		while (str[i])
 		{
 			free(str[i]);
-			str[i] = NULL;
+			i++;
 		}
 		free(str);
 	}

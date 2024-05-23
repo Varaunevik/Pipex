@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 16:23:36 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:40:53 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -32,11 +32,8 @@ int	pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
 		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			exit(free_pip(pipex, err_msg(ERR_PERROR, 1, NULL)));
 	}
-	else
-	{
-		if (open_infile(pipex) == 1)
+	else if (open_infile(pipex) == 1)
 			exit(err_msg(ERR_PERROR, 1, NULL));
-	}
 	pipex->outfile = 0;
 	pipex->paths = split_envp(envp);
 	if (!pipex->paths)
@@ -119,14 +116,17 @@ void	my_free(char **str, int opt)
 int	err_msg(int error, int exit, char *arg)
 {
 	ft_putstr_fd("pipex: ", 2);
+	if (arg && (error == NO_CMD || error == NO_FILE || error == NO_PERM
+				|| error == CMD_FAIL))
+		ft_putstr_fd(arg, 2);
 	if (error == NO_CMD)
-		ft_putstr_fd("command not found: ", 2);
+		ft_putstr_fd(": command not found", 2);
 	if (error == NO_FILE)
-		ft_putstr_fd("no such file or directory: ", 2);
+		ft_putstr_fd(": no such file or directory", 2);
 	if (error == NO_PERM)
-		ft_putstr_fd("permission denied: ", 2);
+		ft_putstr_fd(": permission denied", 2);
 	if (error == CMD_FAIL)
-		ft_putstr_fd("command failed: ", 2);
+		ft_putstr_fd(": command failed", 2);
 	if (error == INVAL_ARG)
 		ft_putstr_fd("invalid number of arguments", 2);
 	if (error == MEM_ERR)
@@ -139,9 +139,6 @@ int	err_msg(int error, int exit, char *arg)
 		ft_putstr_fd("error forking process", 2);
 	if (error == ERR_PERROR)
 		perror(arg);
-	if (arg && (error == NO_CMD || error == NO_FILE || error == NO_PERM
-			|| error == CMD_FAIL))
-		ft_putstr_fd(arg, 2);
 	ft_putstr_fd("\n", 2);
 	return (exit);
 }

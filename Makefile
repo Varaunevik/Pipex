@@ -6,7 +6,7 @@
 #    By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 10:59:17 by vaunevik          #+#    #+#              #
-#    Updated: 2024/05/21 13:18:33 by vaunevik         ###   ########.fr        #
+#    Updated: 2024/05/23 11:45:19 by vaunevik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME		= pipex
@@ -26,10 +26,7 @@ RM			= rm -f
 
 ###############COLORS###############
 
-RED =			\033[0;91m
 GREEN =			\033[0;92m
-YELLOW =		\033[0;93m
-BLUE = \033[0;34m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 DEF_COLOR = \033[0m
@@ -51,9 +48,11 @@ all:
 		@$(MAKE) -C $(LIBFT)
 		@$(MAKE) $(NAME)
 
-$(OBJ_DIR)%.o: %.c Makefile
+
+
+$(OBJ_DIR)%.o: %.c Makefile $(FT_LIB) $(INC_HEADERS)
 			@mkdir -p $(dir $@)
-			@echo "$(YELLOW)Compiling $(CYAN)$< $(DEF_COLOR)"
+			@echo "$(MAGENTA)Compiling $(CYAN)$< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJ)
@@ -67,12 +66,12 @@ bonus: $(NAME)
 clean:
 			@$(RM) -rf $(OBJ_DIR)
 			@make clean -C $(LIBFT)
-			@echo "\n $(RED)Objects cleaned successfully $(DEF_COLOR)\n"
+			@echo "\n $(MAGENTA)Objects cleaned successfully $(DEF_COLOR)\n"
 
 fclean:		clean
 			@$(RM) -f $(NAME)
 			@make fclean -C $(LIBFT)
-			@echo "\n $(RED)Objects and executable cleaned successfully $(DEF_COLOR)\n"
+			@echo "\n $(MAGENTA)Objects and executable cleaned successfully $(DEF_COLOR)\n"
 
 re:			fclean all
 			@echo "$(GREEN)Cleaned and rebuilt everything!$(DEF_COLOR)"

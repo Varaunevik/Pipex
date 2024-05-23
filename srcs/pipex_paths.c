@@ -11,13 +11,32 @@
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
-void	get_correct_path(t_pipex *pipex)
+static void	check_paths(t_pipex *pipex);
+
+void    get_correct_path(t_pipex *pipex)
+{
+        if (ft_strchr(pipex->cmd, '/'))
+        {
+                if (access(pipex->cmd, F_OK) == 0)
+                {
+                        if (access(pipex->cmd, X_OK) != 0)
+                                exit(free_pip(pipex, err_msg(NO_PERM, 126, pipex->cmd)));
+                        return ;
+                }
+                else
+                        exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
+        }
+        else
+                check_paths(pipex);
+}
+
+static void	check_paths(t_pipex *pipex)
 {
 	char	*path;
 	int		i;
 
 	i = -1;
-	while (pipex->paths[++i] && !ft_strchr(pipex->cmd, '/'))
+	while (pipex->paths[++i])
 	{
 		path = ft_strjoin(pipex->paths[i], pipex->cmd);
 		if (!path)

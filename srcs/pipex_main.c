@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 16:23:34 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:22:54 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -47,18 +47,21 @@ int	main(int argc, char **argv, char **envp)
 			exit(free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
 		else if (!pipex.pid)
 			child_process(&pipex, pipex.argv[2 + pipex.heredoc + i]);
-		if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
-			exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
-		close(pipex.fd[READ]);
-		close(pipex.fd[WRITE]);
-		i++;
+		else
+		{
+			close(pipex.fd[WRITE]);
+			if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
+				exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
+			close(pipex.fd[READ]);
+			wait(NULL);
+			i++;
+		}
 	}
-	parent_process(&pipex, pipex.argv[2 + pipex.heredoc + i]);
-	free_pip(&pipex, 0);
+	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + i]);
 	return (0);
 }
 
-void	parent_process(t_pipex *pipex, char *command)
+void	last_cmd(t_pipex *pipex, char *command)
 {
 	open_outfile(pipex);
 	close(pipex->outfile);

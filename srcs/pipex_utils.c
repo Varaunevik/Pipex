@@ -32,8 +32,8 @@ int	pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
 		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			exit(free_pip(pipex, err_msg(ERR_PERROR, 1, NULL)));
 	}
-	else if (open_infile(pipex) == 1)
-			exit(err_msg(ERR_PERROR, 1, NULL));
+	else if (open_infile(pipex) == 0)
+			exit(free_pip(pipex, 0));
 	pipex->outfile = 0;
 	pipex->paths = split_envp(envp);
 	if (!pipex->paths)

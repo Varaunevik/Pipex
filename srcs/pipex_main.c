@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 			if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
 				exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
 			close(pipex.fd[READ]);
-			wait(NULL);
+			waitpid(pipex.pid, NULL, -1);
 			i++;
 		}
 	}
@@ -93,13 +93,13 @@ static void	open_outfile(t_pipex *pipex)
 int	open_infile(t_pipex *pipex)
 {
 	if (access(pipex->argv[1], F_OK))
-		return (err_msg(NO_FILE, 0, pipex->argv[1]));
+		return (err_msg(NO_FILE, 1, pipex->argv[1]));
 	if (!access(pipex->argv[1], F_OK) && access(pipex->argv[1], R_OK))
-		return (err_msg(NO_PERM, 0, pipex->argv[1]));
+		return (err_msg(NO_PERM, 1, pipex->argv[1]));
 	pipex->infile = open(pipex->argv[1], O_RDONLY);
 	if (pipex->infile == -1)
 		return (1);
 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
 		return (1);
-	return (-1);
+	return (0);
 }

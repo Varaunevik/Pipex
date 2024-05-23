@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:18:00 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 14:21:32 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:23:25 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -55,7 +55,7 @@ typedef struct s_pipex
 int			open_infile(t_pipex *pipex);
 int			main(int argc, char **argv, char **envp);
 void		child_process(t_pipex *pipex, char *command);
-void		parent_process(t_pipex *pipex, char *command);
+void		last_cmd(t_pipex *pipex, char *command);
 
 /*-----------------pipex_paths.c---------------*/
 char		**split_envp(char **envp);

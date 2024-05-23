@@ -6,7 +6,7 @@
 #    By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 10:59:17 by vaunevik          #+#    #+#              #
-#    Updated: 2024/05/23 11:45:19 by vaunevik         ###   ########.fr        #
+#    Updated: 2024/05/23 13:13:39 by vaunevik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME		= pipex
@@ -61,7 +61,7 @@ $(NAME):	$(OBJ)
 
 -include $(DEP)
 
-bonus: $(NAME)
+bonus: all
 
 clean:
 			@$(RM) -rf $(OBJ_DIR)

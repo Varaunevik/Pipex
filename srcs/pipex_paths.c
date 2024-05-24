@@ -6,28 +6,28 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/22 16:23:39 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:04:11 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
 static void	check_paths(t_pipex *pipex);
 
-void    get_correct_path(t_pipex *pipex)
+void	get_correct_path(t_pipex *pipex)
 {
-        if (ft_strchr(pipex->cmd, '/'))
-        {
-                if (access(pipex->cmd, F_OK) == 0)
-                {
-                        if (access(pipex->cmd, X_OK) != 0)
-                                exit(free_pip(pipex, err_msg(NO_PERM, 126, pipex->cmd)));
-                        return ;
-                }
-                else
-                        exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
-        }
-        else
-                check_paths(pipex);
+	if (ft_strchr(pipex->cmd, '/'))
+	{
+		if (access(pipex->cmd, F_OK) == 0)
+		{
+			if (access(pipex->cmd, X_OK) != 0)
+				exit(free_pip(pipex, err_msg(NO_PERM, 126, pipex->cmd)));
+			return ;
+		}
+		else
+			exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
+	}
+	else
+		check_paths(pipex);
 }
 
 static void	check_paths(t_pipex *pipex)

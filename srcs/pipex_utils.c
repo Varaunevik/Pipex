@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/23 14:40:53 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:39:39 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -32,7 +32,7 @@ int	pipexify(t_pipex *pipex, int argc, char **argv, char **envp)
 		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			exit(free_pip(pipex, err_msg(ERR_PERROR, 1, NULL)));
 	}
-	else if (open_infile(pipex) == 0)
+	else if (open_infile(pipex) == 1)
 			exit(free_pip(pipex, 0));
 	pipex->outfile = 0;
 	pipex->paths = split_envp(envp);

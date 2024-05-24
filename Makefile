@@ -6,7 +6,7 @@
 #    By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 10:59:17 by vaunevik          #+#    #+#              #
-#    Updated: 2024/05/23 13:13:39 by vaunevik         ###   ########.fr        #
+#    Updated: 2024/05/24 14:35:15 by vaunevik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME		= pipex
@@ -21,7 +21,7 @@ FT_LIB		= $(LIBFT)libft.a
 
 SRC_DIR		= srcs/
 OBJ_DIR		= obj/
-CFLAGS		= -I $(INC) -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS		= -I $(INC) -Wall -Werror -Wextra #-fsanitize=address -g
 RM			= rm -f
 
 ###############COLORS###############
@@ -36,7 +36,8 @@ DEF_COLOR = \033[0m
 SRC_FILES	=	pipex_main.c \
 				pipex_paths.c \
 				special_split.c \
-				pipex_utils.c
+				pipex_utils.c \
+				pipex_error.c
 
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))

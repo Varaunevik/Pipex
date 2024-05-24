@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/23 11:42:51 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:49:43 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -73,12 +73,11 @@ static int	fill_flags(char *cmd, char del, char **full_cmd, int pos)
 		return (0);
 	flag[count] = '\0';
 	count = 0;
-	i = 0;
-	while (cmd[i] && (cmd[i] != del))
+	i = -1;
+	while (cmd[++i] && (cmd[i] != del))
 	{
 		if (cmd[i] != '\\')
 			flag[count++] = cmd[i];
-		i++;
 	}
 	full_cmd[pos] = flag;
 	return (1);

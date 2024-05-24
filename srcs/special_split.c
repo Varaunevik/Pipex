@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 15:01:24 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:14:25 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -14,45 +14,6 @@
 static int	count_flags(char *command);
 static int	fill_flags(char *cmd, char del, char **full_cmd, int pos);
 
-/*int	cmd_split(char *cmd, t_pipex *pipex)
-{
-	int		i;
-	int		pos;
-	char	del;
-
-	i = 0;
-	pos = 0;
-	if (!cmd || !*cmd)
-		return (err_msg(NO_PERM, 0, NULL));
-	pipex->full_cmd = (char **)malloc(sizeof(char *) * (count_flags(cmd) + 1));
-	if (!pipex->full_cmd)
-		return (0);
-	while (cmd[i])
-	{
-		del = ' ';
-		while (cmd && cmd[i] == del)
-			i++;
-		if (cmd[i] && ft_strchr("\"\'\0", cmd[i]))
-			del = cmd[i++];
-		while (cmd && cmd[i] == del)
-			i++;
-		if (cmd[i] && !fill_flags(&cmd[i], del, pipex->full_cmd, pos++))
-		{
-			my_free(pipex->full_cmd, 1);
-			return (0);
-		}
-		while (cmd[i] && cmd[i] != del)
-			i++;
-	}
-	pipex->full_cmd[pos] = NULL;
-	pipex->cmd = ft_strdup(pipex->full_cmd[0]);
-	if (!pipex->cmd)
-	{
-		my_free(pipex->full_cmd, 1);
-		return (0);
-	}
-	return (1);
-}*/
 static int	init_full_cmd(char *cmd, t_pipex *pipex)
 {
 	pipex->full_cmd = (char **)malloc(sizeof(char *) * (count_flags(cmd) + 1));

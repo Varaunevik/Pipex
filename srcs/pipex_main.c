@@ -6,17 +6,19 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 10:39:43 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:00:36 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
 
 static void	open_outfile(t_pipex *pipex);
 
-void	child_process(t_pipex *pipex, char *command)
+void	child_process(t_pipex *pipex, char *command, int count)
 {
 	if (!command || !*command)
-		exit(free_pip(pipex, err_msg(NO_PERM, 0, command)));
+		exit(free_pip(pipex, err_msg(NO_CMD, 0, command)));
+	if (count == 0 && pipex->infile == -1)
+		exit(free_pip(pipex, 0));
 	if (!cmd_split(command, pipex))
 		exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
 	get_correct_path(pipex);
@@ -33,12 +35,12 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	pipex;
 	int		i;
 
-	i = 0;
+	i = -1;
 	if (argc < 5 || (!ft_strncmp(argv[1], "here_doc\0", 9) && argc < 6))
 		return (err_msg(INVAL_ARG, 1, NULL));
 	if (!pipexify(&pipex, argc, argv, envp))
 		return (err_msg(ERR_PERROR, 1, NULL));
-	while (i < (argc - 4 - pipex.heredoc))
+	while (++i < (argc - 4 - pipex.heredoc))
 	{
 		if (pipe(pipex.fd) == -1)
 			return (free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
@@ -46,13 +48,12 @@ int	main(int argc, char **argv, char **envp)
 		if (pipex.pid < 0)
 			exit(free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
 		else if (!pipex.pid)
-			child_process(&pipex, pipex.argv[2 + pipex.heredoc + i]);
+			child_process(&pipex, pipex.argv[2 + pipex.heredoc + i], i);
 		close(pipex.fd[WRITE]);
 		if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
 			exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
 		close(pipex.fd[READ]);
 		waitpid(pipex.pid, NULL, -1);
-		i++;
 	}
 	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + i]);
 	return (0);
@@ -63,7 +64,7 @@ void	last_cmd(t_pipex *pipex, char *command)
 	open_outfile(pipex);
 	close(pipex->outfile);
 	if (!command || !*command)
-		exit(free_pip(pipex, err_msg(NO_PERM, 126, command)));
+		exit(free_pip(pipex, err_msg(NO_CMD, 127, command)));
 	if (!cmd_split(command, pipex))
 		exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
 	get_correct_path(pipex);

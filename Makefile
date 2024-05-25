@@ -6,7 +6,7 @@
 #    By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 10:59:17 by vaunevik          #+#    #+#              #
-#    Updated: 2024/05/24 14:35:15 by vaunevik         ###   ########.fr        #
+#    Updated: 2024/05/25 17:15:55 by vaunevik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME		= pipex
@@ -21,7 +21,7 @@ FT_LIB		= $(LIBFT)libft.a
 
 SRC_DIR		= srcs/
 OBJ_DIR		= obj/
-CFLAGS		= -I $(INC) -Wall -Werror -Wextra #-fsanitize=address -g
+CFLAGS		= -I $(INC) -MMD -Wall -Werror -Wextra -fsanitize=address -g
 RM			= rm -f
 
 ###############COLORS###############

@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:57:48 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 15:14:25 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:43:05 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -35,7 +35,7 @@ static int	process_flags(char *cmd, t_pipex *pipex)
 		del = ' ';
 		while (cmd && cmd[i] == del)
 			i++;
-		if (cmd[i] && (cmd[i] == '"' ||cmd[i] == '\''))
+		if (cmd[i] && (cmd[i] == '"' || cmd[i] == '\''))
 			del = cmd[i++];
 		while (cmd && cmd[i] == del)
 			i++;
@@ -110,7 +110,7 @@ static int	count_flags(char *command)
 		del = ' ';
 		while (command[i] && command[i] == del)
 			i++;
-		if (command[i] && (command[i] == '"' ||command[i] == '\''))
+		if (command[i] && (command[i] == '"' || command[i] == '\''))
 			del = command[i++];
 		while (command[i] && command[i] == del)
 			i++;

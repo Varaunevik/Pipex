@@ -35,7 +35,7 @@ static int	process_flags(char *cmd, t_pipex *pipex)
 		del = ' ';
 		while (cmd && cmd[i] == del)
 			i++;
-		if (cmd[i] && ft_strchr("\"\'\0", cmd[i]))
+		if (cmd[i] && (cmd[i] == '"' ||cmd[i] == '\''))
 			del = cmd[i++];
 		while (cmd && cmd[i] == del)
 			i++;
@@ -110,7 +110,7 @@ static int	count_flags(char *command)
 		del = ' ';
 		while (command[i] && command[i] == del)
 			i++;
-		if (command[i] && ft_strchr("\"\'\0", command[i]))
+		if (command[i] && (command[i] == '"' ||command[i] == '\''))
 			del = command[i++];
 		while (command[i] && command[i] == del)
 			i++;

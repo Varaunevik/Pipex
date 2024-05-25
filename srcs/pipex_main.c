@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/25 12:41:09 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:24:42 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -15,10 +15,10 @@ static void	open_outfile(t_pipex *pipex);
 
 void	child_process(t_pipex *pipex, char *command, int count)
 {
-	if (!command || !*command)
-		exit(free_pip(pipex, err_msg(NO_CMD, 0, command)));
 	if (count == 0 && pipex->infile == -1)
 		exit(free_pip(pipex, 0));
+	if (!command || !*command)
+		exit(free_pip(pipex, err_msg(NO_CMD, 0, command)));
 	if (!cmd_split(command, pipex))
 		exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
 	get_correct_path(pipex);
@@ -34,6 +34,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 	int		i;
+	int		j;
 
 	i = -1;
 	if (argc < 5 || (!ft_strncmp(argv[1], "here_doc\0", 9) && argc < 6))
@@ -53,9 +54,11 @@ int	main(int argc, char **argv, char **envp)
 		if (dup2(pipex.fd[READ], STDIN_FILENO) == -1)
 			exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
 		close(pipex.fd[READ]);
-		waitpid(pipex.pid, NULL, WNOHANG);
 	}
-	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + i]);
+	j = i;
+	while (--i > 0)
+		waitpid(-1, NULL, 0);
+	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + j]);
 	return (0);
 }
 

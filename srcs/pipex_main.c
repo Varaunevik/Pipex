@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:31:23 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/25 16:24:42 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/25 17:19:05 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -34,7 +34,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 	int		i;
-	int		j;
 
 	i = -1;
 	if (argc < 5 || (!ft_strncmp(argv[1], "here_doc\0", 9) && argc < 6))
@@ -47,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			return (free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
 		pipex.pid = fork();
 		if (pipex.pid < 0)
-			exit(free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
+			return(free_pip(&pipex, err_msg(ERR_PERROR, 1, NULL)));
 		else if (!pipex.pid)
 			child_process(&pipex, pipex.argv[2 + pipex.heredoc + i], i);
 		close(pipex.fd[WRITE]);
@@ -55,10 +54,8 @@ int	main(int argc, char **argv, char **envp)
 			exit(free_pip(&pipex, err_msg(DUP_ERR, 1, NULL)));
 		close(pipex.fd[READ]);
 	}
-	j = i;
-	while (--i > 0)
-		waitpid(-1, NULL, 0);
-	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + j]);
+	wait_for_children(i);
+	last_cmd(&pipex, pipex.argv[2 + pipex.heredoc + i]);
 	return (0);
 }
 

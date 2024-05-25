@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:18:00 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 15:20:17 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/25 17:18:44 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -61,11 +61,15 @@ void		last_cmd(t_pipex *pipex, char *command);
 char		**split_envp(char **envp);
 void		get_correct_path(t_pipex *pipex);
 
-/*-----------------pipex_utilc.c---------------*/
-int			err_msg(int error, int exit, char *arg);
-void		my_free(char **str, int opt);
-int			free_pip(t_pipex *pipex, int error);
+/*-----------------pipex_utils.c---------------*/
 int			pipexify(t_pipex *pipex, int argc, char **argv, char **envp);
+void		wait_for_children(int num_children);
+
+
+/*-----------------pipex_error.c---------------*/
+int         err_msg(int error, int exit, char *arg);
+void        my_free(char **str, int opt);
+int         free_pip(t_pipex *pipex, int error);
 
 /*-----------------special_split.c-------------*/
 int			cmd_split(char *cmd, t_pipex *pipex);

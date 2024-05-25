@@ -6,7 +6,7 @@
 /*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:46:17 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 14:42:20 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/05/25 17:18:36 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/pipex.h"
@@ -49,6 +49,12 @@ static char	*find_limiter(t_pipex *pipex)
 	if (!lim)
 		return (0);
 	return (lim);
+}
+
+void	wait_for_children(int num_children)
+{
+	while (--num_children > 0)
+		waitpid(-1, NULL, 0);
 }
 
 static int	check_heredoc(t_pipex *pipex)

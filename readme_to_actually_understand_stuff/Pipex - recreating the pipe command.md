@@ -102,8 +102,22 @@ The bonus part wants us do do this with multiple commands and pipes. It is essen
 
 ![image](https://github.com/Varaunevik/Pipex/assets/145858191/1edfcd65-7f68-484a-93a3-190eb2b45ff6)
 
-This is an attempt at visualizing the pipex program when we have multiple commands and child processes.
+Take this as an example:
 
+```c
+< infile ls | cat > outfile
+```
+### **How Piping Works**
+
+- **First Command (ls)**:
+    - The first child process will read from **`infile`** and **write** to the **pipe**.
+    - The **parent process closes the write end of the pipe** and **redirects the read end to standard input** for the **next command**.
+- **Intermediate Commands**:
+    - Each **subsequent child process will read from the previous pipe's read end and write to a new pipe's write end.**
+    - The **parent process sets up the pipes and redirects the file descriptors appropriately.**
+- **Last Command (cat)**:
+    - The last command will read from the final pipe and write to **`outfile`**.
+    - This is handled by **`last_cmd`**.
 ### Waiting for the children
 
 We have to use the wait() function in order to wait for the child processes to finish before returning. 

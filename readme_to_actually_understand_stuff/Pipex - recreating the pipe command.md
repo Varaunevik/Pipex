@@ -102,22 +102,25 @@ The bonus part wants us do do this with multiple commands and pipes. It is essen
 
 ![image](https://github.com/Varaunevik/Pipex/assets/145858191/1edfcd65-7f68-484a-93a3-190eb2b45ff6)
 
-Take this as an example:
+### **How Pipes and File Descriptors Work in Parent and Child Processes**
 
-```c
-< infile ls | cat > outfile
-```
-### **How Piping Works**
+1. **Creating the Pipe**:
+    - **`pipe(pipex.fd)`** creates a pipe, which is essentially two file descriptors: **`pipex.fd[READ]`** for reading and **`pipex.fd[WRITE]`** for writing.
+    - Both the parent and child processes have copies of these file descriptors.
+2. **Forking**:
+    - The **`fork()`** system call creates a child process. After forking, both the parent and child have copies of the same file descriptors.
+3. **Child Process Setup**:
+    - In the child process, the write end of the pipe (**`pipex.fd[WRITE]`**) is duplicated to standard output (**`STDOUT_FILENO`**) using **`dup2(pipex.fd[WRITE], STDOUT_FILENO)`**.
+    - This means that anything the child process writes to **`STDOUT_FILENO`** (standard output) actually goes into the write end of the pipe.
+    - The child process then closes the original **`pipex.fd[WRITE]`** file descriptor because it’s no longer needed. The redirection is already set up by **`dup2`**.
+4. **Executing the Command in the Child**:
+    - The child process executes the command using **`execve()`**. The output of this command goes to **`STDOUT_FILENO`**, which is now redirected to the write end of the pipe.
+5. **Parent Process Setup**:
+    - In the parent process, after forking, the parent closes the write end of the pipe (**`pipex.fd[WRITE]`**) because it only needs to read the output of the child process.
+    - The read end of the pipe (**`pipex.fd[READ]`**) is duplicated to standard input (**`STDIN_FILENO`**) using **`dup2(pipex.fd[READ], STDIN_FILENO)`**.
+    - This means that anything the parent (or the next child process) reads from **`STDIN_FILENO`** (standard input) will actually come from the read end of the pipe.
+  
 
-- **First Command (ls)**:
-    - The first child process will read from **`infile`** and **write** to the **pipe**.
-    - The **parent process closes the write end of the pipe** and **redirects the read end to standard input** for the **next command**.
-- **Intermediate Commands**:
-    - Each **subsequent child process will read from the previous pipe's read end and write to a new pipe's write end.**
-    - The **parent process sets up the pipes and redirects the file descriptors appropriately.**
-- **Last Command (cat)**:
-    - The last command will read from the final pipe and write to **`outfile`**.
-    - This is handled by **`last_cmd`**.
 ### Waiting for the children
 
 We have to use the wait() function in order to wait for the child processes to finish before returning. 

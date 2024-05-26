@@ -2,15 +2,6 @@
 
 *I don’t know if I enjoyed this project because it interested me on an intellectual level, or if it was due to the fact that I could google “how to create a child” without feeling weird.* 
 
-**Program files + explanations:**
-
-[pipex_main.c](https://www.notion.so/pipex_main-c-635d3cd0333d4b27849e315070b24927?pvs=21)
-
-[pipex_utils.c](https://www.notion.so/pipex_utils-c-93654d08e3f44d1898707591fc2ef799?pvs=21)
-
-[pipex_paths.c](https://www.notion.so/pipex_paths-c-58f1859a56ba44918f4398b11888da9d?pvs=21)
-
-[special_split.c](https://www.notion.so/special_split-c-4a536cb248624e57afcfae1800c083a9?pvs=21)
 
 If you’re new to pipex you may have at least one raised eyebrow right now. Let me lower them for you. 
 
@@ -18,25 +9,8 @@ This is a semi-detailed tutorial of the pipex project, whose main purpose is rec
 
 *Lowered?*
 
-![Untitled](Pipex%20-%20recreating%20the%20pipe%20command%205d311f9c8fc34c47b4d9fab6f1151b1f/Untitled.png)
+![image](https://github.com/Varaunevik/Pipex/assets/145858191/e23490ce-550d-4676-b352-ea6d0c1dcb99)
 
----
-
-Before getting into any code, it is crucial to have a good understanding of what the allowed functions do and how to use them. 
-
-## Functions and their function
-
-[Fork()](https://www.notion.so/Fork-ee4b0455a3a743b3930958655c6661c8?pvs=21)
-
-[Pipe()](https://www.notion.so/Pipe-f6801279862d4c6da338025826a1e174?pvs=21)
-
-[dup2()](https://www.notion.so/dup2-d4cbb11d95c14f79a3d142dfb4a0bee0?pvs=21)
-
-[**execve()**](https://www.notion.so/execve-3d040c266d68426ea43ef7bda5adc7a6?pvs=21)
-
-[Access()](https://www.notion.so/Access-b94e5fdb7d144f38bd0f9ae9be9dedfb?pvs=21)
-
-[Wait()](https://www.notion.so/Wait-3d21728a804745a7b225620289580d8e?pvs=21)
 
 ---
 
@@ -114,7 +88,7 @@ This will send an EOF (end of file) to the child, which is its clue to execute t
 3. The result will then *“travel”* through the pipe’s **read-only end (fd[0])**. What was once output is now **input for the second command** to handle. Which is why we only need write permission.
 4. The **command executes on the input** and again produces output which now will be **written to the standard output** file (outfile).
 
-![Screen Shot 2024-05-09 at 11.43.00 AM.png](Pipex%20-%20recreating%20the%20pipe%20command%205d311f9c8fc34c47b4d9fab6f1151b1f/Screen_Shot_2024-05-09_at_11.43.00_AM.png)
+![image](https://github.com/Varaunevik/Pipex/assets/145858191/cc96983b-ee1e-420b-b9b6-9643a3fc570b)
 
 That is the main idea of the pipex project.
 
@@ -126,7 +100,7 @@ The bonus part wants us do do this with multiple commands and pipes. It is essen
 
 **We create one child process for each command.** They will follow the pipeline, opening and closing file descriptors as they finish. 
 
-![This is an attempt at visualizing the pipex program when we have multiple commands and child processes.](Pipex%20-%20recreating%20the%20pipe%20command%205d311f9c8fc34c47b4d9fab6f1151b1f/Screen_Shot_2024-05-09_at_11.48.09_AM.png)
+![image](https://github.com/Varaunevik/Pipex/assets/145858191/1edfcd65-7f68-484a-93a3-190eb2b45ff6)
 
 This is an attempt at visualizing the pipex program when we have multiple commands and child processes.
 
@@ -182,7 +156,7 @@ Which is exactly what we want to do. We want to find the correct command.
 
 The paths are divided by “:”, not a space. Sort of like this (look for the line after PATH):
 
-![Untitled](Pipex%20-%20recreating%20the%20pipe%20command%205d311f9c8fc34c47b4d9fab6f1151b1f/Untitled%201.png)
+![image](https://github.com/Varaunevik/Pipex/assets/145858191/82fb3056-6d8c-46a6-887a-4e977f7a87a1)
 
 ### Step-by-step to find the correct path
 
@@ -227,22 +201,6 @@ Will exit the program, terminate all the programs that are currently running, fl
 - First command not found/second/both
 - All errors at once (such as nofile “ca” “ “ /dev/null/ ) then check echo $?
 
-[Checks](https://www.notion.so/Checks-82f0fc12e55440fea354b94c8c831e5b?pvs=21)
-
 ---
 
 Now that we have some background on the program and its functions - let’s start coding. 
-
-## The code and its explanations
-
-We don’t need too many files for our pipex program, however, we will take use of both the get_next_line and the libft in our library folder to support us throughout the journey. 
-
-[pipex.c](https://www.notion.so/pipex-c-f971d1b2c07a4b1d8a604679ca1acb08?pvs=21)
-
-[bonus.c](https://www.notion.so/bonus-c-c7033bc673a04c7392e0c058ae453906?pvs=21)
-
-[paths.c](https://www.notion.so/paths-c-37dd27aae9394981935bbc222d974515?pvs=21)
-
-[utils.c](https://www.notion.so/utils-c-066fa6fd90c040329f3c2912a7859afc?pvs=21)
-
-[pipex_bonus.c](https://www.notion.so/pipex_bonus-c-7c4b402d241e46bdab3922f6c1d7299d?pvs=21)
